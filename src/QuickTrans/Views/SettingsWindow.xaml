@@ -1,0 +1,266 @@
+<Window x:Class="QuickTrans.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="QuickTrans 设置" Width="700" Height="760" MinWidth="640" MinHeight="620"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+    </Window.Resources>
+    <Border Background="{DynamicResource WindowBrush}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                      Background="Transparent" Foreground="{DynamicResource TextBrush}">
+            <Grid Width="600" Margin="32,30,32,40" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,26">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="50"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                    <Border Width="42" Height="42" CornerRadius="11" Background="White"
+                            VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <Image Source="/QuickTrans;component/Assets/QuickTrans.png" Width="37" Height="37" Stretch="Uniform"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="4,-2,0,0">
+                        <TextBlock Text="QuickTrans" FontSize="25" FontWeight="SemiBold"/>
+                        <TextBlock Text="选中文字，按下快捷键，就地查看译文。" Margin="0,5,0,0" FontSize="13"
+                                   Foreground="{DynamicResource MutedTextBrush}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Border Grid.Row="1" Style="{StaticResource SectionCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="基本设置" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,17"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="142"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="默认引擎" Style="{StaticResource FieldLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                            <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Providers}" DisplayMemberPath="DisplayName"
+                                      SelectedValuePath="Id" SelectedValue="{Binding DefaultProvider}"/>
+                            <TextBlock Grid.Row="1" Text="全局快捷键" Style="{StaticResource FieldLabelStyle}" VerticalAlignment="Center" Margin="0,17,0,0"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Hotkey, UpdateSourceTrigger=PropertyChanged}" Margin="0,12,0,0"/>
+                            <CheckBox Grid.Row="2" Grid.Column="1" Content="登录 Windows 后自动启动"
+                                      IsChecked="{Binding RunAtStartup}" Margin="0,16,0,1"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="2" Style="{StaticResource SectionCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="外观与配色" FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock Text="跟随系统，或精细控制界面中的每一层颜色。修改后会立即预览。"
+                                   Margin="0,4,0,17" FontSize="12" Foreground="{DynamicResource MutedTextBrush}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="142"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <TextBlock Text="主题模式" Style="{StaticResource FieldLabelStyle}" VerticalAlignment="Center" Margin="0"/>
+                            <ComboBox Grid.Column="1" ItemsSource="{Binding ThemeModes}" DisplayMemberPath="DisplayName"
+                                      SelectedValuePath="Id" SelectedValue="{Binding ThemeMode, Mode=TwoWay}"/>
+                        </Grid>
+
+                        <Border Margin="0,17,0,0" Padding="16" CornerRadius="9" Background="{DynamicResource SurfaceAltBrush}"
+                                Visibility="{Binding IsCustomTheme, Converter={StaticResource BoolToVisibility}}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,14">
+                                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="自定义色板" FontSize="13" FontWeight="SemiBold"/>
+                                        <TextBlock Text="使用 #RRGGBB 格式；保存前会检查全部颜色。" FontSize="11" Margin="0,3,0,0"
+                                                   Foreground="{DynamicResource MutedTextBrush}"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <Button Content="以浅色为起点" Command="{Binding UseLightPaletteCommand}" Padding="10,6" MinHeight="30"/>
+                                        <Button Content="以深色为起点" Command="{Binding UseDarkPaletteCommand}" Padding="10,6" MinHeight="30" Margin="0"/>
+                                    </StackPanel>
+                                </Grid>
+                                <UniformGrid Columns="2">
+                                    <StackPanel Margin="0,0,14,12">
+                                        <TextBlock Text="窗口背景" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeWindow}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeWindow, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,12">
+                                        <TextBlock Text="内容背景" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeSurface}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeSurface, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,14,12">
+                                        <TextBlock Text="次级背景" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeSurfaceAlt}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeSurfaceAlt, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,12">
+                                        <TextBlock Text="输入框背景" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeInput}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeInput, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,14,12">
+                                        <TextBlock Text="主要文字" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeText}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeText, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,12">
+                                        <TextBlock Text="次要文字" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeMutedText}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeMutedText, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,14,12">
+                                        <TextBlock Text="边框" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeBorder}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeBorder, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,12">
+                                        <TextBlock Text="强调色" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeAccent}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeAccent, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,14,12">
+                                        <TextBlock Text="悬停强调色" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeAccentHover}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeAccentHover, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,0,12">
+                                        <TextBlock Text="弱强调背景" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeAccentSubtle}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeAccentSubtle, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,0,14,0">
+                                        <TextBlock Text="错误提示" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeError}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeError, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                    <StackPanel Margin="0">
+                                        <TextBlock Text="成功提示" Style="{StaticResource FieldLabelStyle}"/>
+                                        <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="34"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                                            <Border Background="{Binding ThemeSuccess}" CornerRadius="6" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" Margin="0,0,7,0"/>
+                                            <TextBox Grid.Column="1" Text="{Binding ThemeSuccess, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="3" Style="{StaticResource SectionCardStyle}">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,17">
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="AI 翻译" FontSize="16" FontWeight="SemiBold"/>
+                                <TextBlock Text="OpenAI 兼容接口 · 支持流式输出" Margin="0,4,0,0" FontSize="12"
+                                           Foreground="{DynamicResource MutedTextBrush}"/>
+                            </StackPanel>
+                            <Border Grid.Column="1" Background="{DynamicResource AccentSubtleBrush}" CornerRadius="5" Padding="8,4" VerticalAlignment="Top">
+                                <TextBlock Text="推荐" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/>
+                            </Border>
+                        </Grid>
+                        <TextBlock Text="Base URL" Style="{StaticResource FieldLabelStyle}"/>
+                        <TextBox Text="{Binding OpenAiBaseUrl, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,12"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="API Key" Style="{StaticResource FieldLabelStyle}"/>
+                                <PasswordBox x:Name="OpenAiApiKeyBox" PasswordChanged="OpenAiApiKeyBox_OnPasswordChanged"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="模型" Style="{StaticResource FieldLabelStyle}"/>
+                                <TextBox Text="{Binding OpenAiModel, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </Grid>
+                        <Expander Header="自定义翻译提示词" Margin="0,15,0,13" FontSize="13">
+                            <TextBox Text="{Binding CustomPrompt, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"
+                                     MinHeight="92" Margin="0,9,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+                        </Expander>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="测试连接" Command="{Binding TestOpenAiCommand}"/>
+                            <TextBlock Text="{Binding OpenAiStatus}" VerticalAlignment="Center" FontSize="12"
+                                       Foreground="{DynamicResource MutedTextBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="4" Style="{StaticResource SectionCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="百度翻译" FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock Text="通用文本翻译 API" Margin="0,4,0,16" FontSize="12" Foreground="{DynamicResource MutedTextBrush}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="App ID" Style="{StaticResource FieldLabelStyle}"/>
+                                <TextBox Text="{Binding BaiduAppId, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="密钥" Style="{StaticResource FieldLabelStyle}"/>
+                                <PasswordBox x:Name="BaiduSecretBox" PasswordChanged="BaiduSecretBox_OnPasswordChanged"/>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                            <Button Content="测试连接" Command="{Binding TestBaiduCommand}"/>
+                            <TextBlock Text="{Binding BaiduStatus}" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource MutedTextBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Row="5" Style="{StaticResource SectionCardStyle}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Text="阿里云机器翻译" FontSize="16" FontWeight="SemiBold"/>
+                        <TextBlock Text="通用版 · 中英双向" Margin="0,4,0,16" FontSize="12" Foreground="{DynamicResource MutedTextBrush}"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="14"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="AccessKey ID" Style="{StaticResource FieldLabelStyle}"/>
+                                <TextBox Text="{Binding AliyunAccessKeyId, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="AccessKey Secret" Style="{StaticResource FieldLabelStyle}"/>
+                                <PasswordBox x:Name="AliyunSecretBox" PasswordChanged="AliyunSecretBox_OnPasswordChanged"/>
+                            </StackPanel>
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+                            <Button Content="测试连接" Command="{Binding TestAliyunCommand}"/>
+                            <TextBlock Text="{Binding AliyunStatus}" VerticalAlignment="Center" FontSize="12" Foreground="{DynamicResource MutedTextBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Grid Grid.Row="6">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center" Margin="0,0,20,0">
+                        <TextBlock Text="{Binding PageStatus}" Foreground="{DynamicResource ErrorBrush}" FontSize="12"/>
+                        <TextBlock Text="凭据保存在当前用户的本地配置目录，请勿分享配置文件。"
+                                   FontSize="11" Foreground="{DynamicResource MutedTextBrush}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="保存设置" Command="{Binding SaveCommand}"
+                            Style="{StaticResource PrimaryButtonStyle}" Padding="20,9" Margin="0"/>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Border>
+</Window>

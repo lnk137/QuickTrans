@@ -1,0 +1,22 @@
+# Build and IDE output
+bin/
+obj/
+publish/
+.vs/
+.idea/
+TestResults/
+*.user
+*.suo
+
+# Machine-local tools, generated packages and screenshots
+work/
+outputs/
+
+# Local configuration, credentials and logs
+config.json
+config.json.tmp
+.env
+.env.*
+*.log
+*.pfx
+*.snk
