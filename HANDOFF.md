@@ -3,6 +3,7 @@
 最后更新：2026-09-21  
 当前版本：0.1.8  
 项目根目录：`E:\Dev\Projects\QuickTrans`
+GitHub：`https://github.com/lnk137/QuickTrans`（私有仓库）
 
 ## 1. 项目定位
 
@@ -639,7 +640,7 @@ created=50 closed=50 remaining=0
 - 扩充 `.gitignore`，排除本机 SDK、Inno 本体、构建产物、配置、凭据和日志。
 - 扫描高置信度密钥模式，未发现待提交的真实凭据或私钥。
 - 初始化 `main` 分支并以 QuickTrans 0.1.8 建立首个基线提交。
-- 准备通过 SSH 推送到 GitHub 私有仓库。
+- 创建 GitHub 私有仓库 `lnk137/QuickTrans`，并通过 SSH 推送 `main` 分支。
 
 ## 9. 当前产品边界
 
