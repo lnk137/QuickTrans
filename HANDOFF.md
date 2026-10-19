@@ -1,9 +1,12 @@
 # QuickTrans 项目交接与开发日志
 
-最后更新：2026-09-21  
-当前版本：0.1.8  
-项目根目录：`E:\Dev\Projects\QuickTrans`
-GitHub：`https://github.com/lnk137/QuickTrans`（私有仓库）
+最后更新：2026-10-19
+
+当前版本：Windows 0.1.8 / macOS 0.1.9
+
+GitHub：`https://github.com/lnk137/QuickTrans`（公开仓库）
+
+本文主体记录 Windows 客户端的架构与历史环境；历史机器路径和工具状态不代表当前开发环境。跨平台功能及构建入口以 [README.md](README.md) 为准，macOS 客户端说明见 [macos/README.md](macos/README.md)。
 
 ## 1. 项目定位
 
@@ -641,6 +644,14 @@ created=50 closed=50 remaining=0
 - 扫描高置信度密钥模式，未发现待提交的真实凭据或私钥。
 - 初始化 `main` 分支并以 QuickTrans 0.1.8 建立首个基线提交。
 - 创建 GitHub 私有仓库 `lnk137/QuickTrans`，并通过 SSH 推送 `main` 分支。
+
+### 2026-10-19：macOS 客户端与公开仓库
+
+- 加入原生 SwiftUI / AppKit 菜单栏客户端，支持 `⌥Q` 取词、OpenAI 兼容接口、中英双向翻译、复制和句段解释。
+- 登录自启动时静默运行，手动启动仍打开设置。
+- 打包后为完整应用进行 ad-hoc 签名并验证；尚无 Developer ID 签名与 Apple 公证。
+- 将 GitHub 仓库改为公开，重写 README，明确两个平台的功能差异、构建流程和配置隐私。
+- 在 `AGENTS.md` 中约定 Emoji 提交类型及英文 commit 消息，增加提交模板，并忽略 macOS 构建产物。
 
 ## 9. 当前产品边界
 
