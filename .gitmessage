@@ -1,0 +1,6 @@
+# <emoji> <type>[(optional-scope)]: <imperative summary>
+# Commit 标题、正文和尾注必须全部使用英文。
+# 示例：🐛 fix(macos): keep settings hidden when launched at login
+# 标题应简短、具体，末尾不加句号。
+# 可选正文或尾注前需空一行。
+# 完整 Emoji 和类型规范见 AGENTS.md。
