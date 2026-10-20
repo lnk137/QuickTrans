@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="src/QuickTrans/Assets/QuickTrans.png" width="112" height="112" alt="QuickTrans Logo" />
+  <img src="assets/QuickTrans.png" width="112" height="112" alt="QuickTrans Logo" />
 
   <h1>QuickTrans</h1>
   <p><strong>选中文字，按下快捷键，继续阅读。</strong></p>
@@ -10,6 +10,9 @@
     <img src="https://img.shields.io/badge/macOS-13%2B-111111?style=flat-square" alt="macOS 13 and later" />
     <img src="https://img.shields.io/badge/.NET-8-512BD4?style=flat-square" alt=".NET 8" />
     <img src="https://img.shields.io/badge/Swift-5.9%2B-F05138?style=flat-square" alt="Swift 5.9 and later" />
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT license" /></a>
+    <a href="https://github.com/lnk137/QuickTrans/actions/workflows/windows.yml"><img src="https://github.com/lnk137/QuickTrans/actions/workflows/windows.yml/badge.svg" alt="Windows build and tests" /></a>
+    <a href="https://github.com/lnk137/QuickTrans/actions/workflows/macos.yml"><img src="https://github.com/lnk137/QuickTrans/actions/workflows/macos.yml/badge.svg" alt="macOS build" /></a>
     <a href="https://github.com/lnk137/QuickTrans/stargazers"><img src="https://img.shields.io/github/stars/lnk137/QuickTrans?style=flat-square" alt="GitHub stars" /></a>
   </p>
 
@@ -132,13 +135,14 @@ open /Applications/QuickTrans.app
 需要 Windows 与 .NET 8 SDK。运行：
 
 ```powershell
+cd windows
 dotnet restore QuickTrans.sln
 dotnet build QuickTrans.sln -c Release
 dotnet test tests\QuickTrans.Tests\QuickTrans.Tests.csproj -c Release
 dotnet publish src\QuickTrans\QuickTrans.csproj -c Release -r win-x64 --self-contained true
 ```
 
-生成的程序位于 `src/QuickTrans/bin/Release/net8.0-windows10.0.19041.0/win-x64/publish/`。如需安装器，使用 Inno Setup 6 编译 `installer/QuickTrans.iss`，产物输出到 `outputs/`；默认按当前用户安装，无需管理员权限。
+以上命令在 `windows/` 中运行。生成的程序位于仓库的 `windows/src/QuickTrans/bin/Release/net8.0-windows10.0.19041.0/win-x64/publish/`。如需安装器，使用 Inno Setup 6+ 编译 `windows/installer/QuickTrans.iss`，产物输出到 `windows/outputs/`；默认按当前用户安装，无需管理员权限。详见 [Windows 文档](windows/README.md)。
 
 <details>
 <summary><strong>配置可选的版本检查</strong></summary>
@@ -149,7 +153,7 @@ dotnet publish src\QuickTrans\QuickTrans.csproj -c Release -r win-x64 --self-con
 dotnet publish src\QuickTrans\QuickTrans.csproj -c Release -r win-x64 --self-contained true -p:QuickTransUpdateManifestUrl=https://example.com/update.json
 ```
 
-清单格式参考 [update-manifest.example.json](update-manifest.example.json)。版本检查不会自动安装更新。
+此命令同样在 `windows/` 中运行。清单格式参考 [update-manifest.example.json](windows/update-manifest.example.json)。版本检查不会自动安装更新。
 
 </details>
 
@@ -171,15 +175,23 @@ Windows 可通过 `QUICKTRANS_CONFIG_DIR` 环境变量覆盖配置目录，用�
 
 ```text
 QuickTrans/
-├── src/QuickTrans/        # Windows 客户端
-├── tests/QuickTrans.Tests/ # Windows 自动化测试
-├── macos/QuickTransMac/   # macOS 原生客户端
-├── macos/build-app.sh    # macOS 打包与签名校验
-├── installer/            # Windows Inno Setup 安装脚本
-├── tools/                # 资源生成工具
-├── AGENTS.md             # Agent 工作约束与提交规范
-└── HANDOFF.md            # Windows 架构、历史记录与已知限制
+├── windows/                  # Windows 独立工程与说明
+│   ├── src/QuickTrans/        # C# / WPF 客户端
+│   ├── tests/QuickTrans.Tests/ # Windows 自动化测试
+│   ├── installer/            # Inno Setup 安装脚本
+│   └── QuickTrans.sln        # Windows 解决方案
+├── macos/                    # macOS 独立工程与说明
+│   ├── QuickTransMac/        # Swift / SwiftUI 客户端
+│   └── build-app.sh          # 打包与签名校验
+├── assets/                   # 两端共用的图标资源
+├── tools/                    # 资源生成工具
+├── AGENTS.md                 # Agent 工作约束与提交规范
+└── HANDOFF.md                # Windows 架构、历史记录与已知限制
 ```
+
+两个客户端位于同一仓库、同一主分支中，各自构建与测试；目前共享图标资源，业务逻辑分别实现，不依赖额外的公共运行时。
+
+GitHub Actions 根据路径触发平台检查：Windows 执行构建、自动化测试与自包含发布验证，macOS 执行应用打包与签名校验；共享图标变更会触发两端检查。
 
 ## 参与贡献
 
@@ -198,4 +210,8 @@ QuickTrans/
 git config --local commit.template .gitmessage
 ```
 
-架构与开发历史见 [HANDOFF.md](HANDOFF.md)，macOS 细节见 [macos/README.md](macos/README.md)。仓库目前尚未声明开源许可证。
+架构与开发历史见 [HANDOFF.md](HANDOFF.md)，平台细节见 [Windows 文档](windows/README.md)及 [macOS 文档](macos/README.md)。
+
+## 许可证
+
+本项目采用 [MIT License](LICENSE)。

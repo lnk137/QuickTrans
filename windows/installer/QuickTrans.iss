@@ -18,7 +18,7 @@ OutputBaseFilename=QuickTrans-{#MyAppVersion}-win-x64-setup
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
-SetupIconFile=..\src\QuickTrans\Assets\QuickTrans.ico
+SetupIconFile=..\..\assets\QuickTrans.ico
 CloseApplications=yes
 UninstallDisplayIcon={app}\{#MyAppExeName}
 

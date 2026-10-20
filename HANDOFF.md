@@ -1,12 +1,14 @@
 # QuickTrans 项目交接与开发日志
 
-最后更新：2026-10-19
+最后更新：2026-10-20
 
 当前版本：Windows 0.1.8 / macOS 0.1.9
 
 GitHub：`https://github.com/lnk137/QuickTrans`（公开仓库）
 
 本文主体记录 Windows 客户端的架构与历史环境；历史机器路径和工具状态不代表当前开发环境。跨平台功能及构建入口以 [README.md](README.md) 为准，macOS 客户端说明见 [macos/README.md](macos/README.md)。
+
+2026-10-20 目录调整：Windows 解决方案、`Directory.Build.props`、`src/`、`tests/`、`installer/` 和版本清单示例已整体移入 `windows/`。下文历史记录中的这些路径均以 `windows/` 为基准；历史的 `src/QuickTrans/Assets/` 图标现位于根目录 `assets/`，通过 WPF 链接资源保留原有资源 URI。当前 Windows 构建入口见 [windows/README.md](windows/README.md)。
 
 ## 1. 项目定位
 
@@ -652,6 +654,15 @@ created=50 closed=50 remaining=0
 - 打包后为完整应用进行 ad-hoc 签名并验证；尚无 Developer ID 签名与 Apple 公证。
 - 将 GitHub 仓库改为公开，重写 README，明确两个平台的功能差异、构建流程和配置隐私。
 - 在 `AGENTS.md` 中约定 Emoji 提交类型及英文 commit 消息，增加提交模板，并忽略 macOS 构建产物。
+
+### 2026-10-20：整理多平台源码与许可证
+
+- 核对 Windows 开发机的干净工作区及源码树，确认与仓库已有 Windows 基线一致，没有遗漏的已跟踪改动。
+- 将 Windows 工程整理到 `windows/`，与 `macos/` 并列维护；图标统一存放在 `assets/`。
+- 更新 .NET 工程的链接资源、Inno Setup 图标路径、macOS 打包脚本和跨平台文档。
+- 按用户选择添加 MIT 许可证。
+- 添加按平台路径触发的 GitHub Actions：Windows 构建、测试、自包含发布；macOS 打包与签名校验。
+- 本次重整在 Windows 开发机使用 .NET SDK 8.0.424 验证：构建零警告、零错误，22 项测试全部通过，自包含发布成功，Inno Setup 7.1.0 安装包编译成功，WPF 图标资源路径保持兼容；macOS 打包和完整签名校验通过。此验证不包含安装器交互或完整 GUI 端到端测试。
 
 ## 9. 当前产品边界
 

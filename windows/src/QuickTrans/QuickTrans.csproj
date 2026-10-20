@@ -15,12 +15,12 @@
     <AssemblyName>QuickTrans</AssemblyName>
     <RootNamespace>QuickTrans</RootNamespace>
     <Version>0.1.8</Version>
-    <ApplicationIcon>Assets\QuickTrans.ico</ApplicationIcon>
+    <ApplicationIcon>..\..\..\assets\QuickTrans.ico</ApplicationIcon>
     <QuickTransUpdateManifestUrl Condition="'$(QuickTransUpdateManifestUrl)' == ''"></QuickTransUpdateManifestUrl>
   </PropertyGroup>
   <ItemGroup>
     <AssemblyMetadata Include="UpdateManifestUrl" Value="$(QuickTransUpdateManifestUrl)" />
-    <Resource Include="Assets\QuickTrans.ico" />
-    <Resource Include="Assets\QuickTrans.png" />
+    <Resource Include="..\..\..\assets\QuickTrans.ico" Link="Assets\QuickTrans.ico" />
+    <Resource Include="..\..\..\assets\QuickTrans.png" Link="Assets\QuickTrans.png" />
   </ItemGroup>
 </Project>

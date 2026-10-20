@@ -19,7 +19,7 @@ cd "$ROOT"
 swift build -c release
 cp ".build/release/QuickTransMac" "$APP/Contents/MacOS/QuickTransMac"
 cp Info.plist "$APP/Contents/Info.plist"
-SOURCE_PNG="$ROOT/../../src/QuickTrans/Assets/QuickTrans.png"
+SOURCE_PNG="$ROOT/../../assets/QuickTrans.png"
 cp "$SOURCE_PNG" "$APP/Contents/Resources/QuickTrans.png"
 ICON_TMP="$(mktemp -d)"
 trap 'find "$ICON_TMP" -type f -delete; find "$ICON_TMP" -depth -type d -empty -delete' EXIT
